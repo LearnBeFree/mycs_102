@@ -1,6 +1,7 @@
 """
 Sudoku solving program.
 """
+
 import pathlib
 import typing as tp
 from random import randint
@@ -30,8 +31,7 @@ def display(ngrid: tp.List[tp.List[str]]) -> None:
     width = 2
     line = "+".join(["-" * (width * 3)] * 3)
     for row in range(9):
-        print("".join(ngrid[row][col].center(width) + \
-                ("|" if str(col) in "25" else "") for col in range(9)))
+        print("".join(ngrid[row][col].center(width) + ("|" if str(col) in "25" else "") for col in range(9)))
         if str(row) in "25":
             print(line)
     print()
@@ -180,7 +180,7 @@ def check_solution(solution: tp.List[tp.List[str]]) -> bool:
     """Если решение solution верно, то вернуть True, в противном случае False"""
     for y, line in enumerate(solution):
         for x, n in enumerate(line):
-            if n == '.':
+            if n == ".":
                 return False
 
             pos = (y, x)
