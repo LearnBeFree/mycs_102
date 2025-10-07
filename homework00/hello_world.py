@@ -1,4 +1,4 @@
-""" Just prints a message. """
+"""Just prints a message."""
 
 
 def text():
