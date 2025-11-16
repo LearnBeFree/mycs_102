@@ -18,9 +18,7 @@ def read_sudoku(path: str | pathlib.Path) -> list[list[str]]:
 
 
 def create_grid(puzzle: str) -> list[list[str]]:
-    """
-    Create grid function
-    """
+    """Create grid"""
     digits = [c for c in puzzle if c in "123456789."]
     grid = group(digits, 9)
     return grid
@@ -31,7 +29,11 @@ def display(grid: list[list[str]]) -> None:
     width = 2
     line = "+".join(["-" * (width * 3)] * 3)
     for row in range(9):
-        print("".join(grid[row][col].center(width) + ("|" if str(col) in "25" else "") for col in range(9)))
+        print(
+            "".join(
+                grid[row][col].center(width) + ("|" if str(col) in "25" else "") for col in range(9)
+            )
+        )
         if str(row) in "25":
             print(line)
     print()
@@ -41,8 +43,9 @@ def group(values: list[T], n: int) -> list[list[T]]:
     """Group values into groups of n"""
 
     length = len(values)
-    newls: list[list[T]] = [[el for i, el in enumerate(values) if i // n == group_i] 
-                            for group_i in range(length // n)]
+    newls: list[list[T]] = [
+        [el for i, el in enumerate(values) if i // n == group_i] for group_i in range(length // n)
+    ]
 
     return newls
 
@@ -57,7 +60,6 @@ def get_col(grid: list[list[str]], pos: tuple[int, int]) -> list[str]:
     """Возвращает все значения для номера столбца, указанного в pos"""
 
     return [grid[i][pos[1]] for i in range(len(grid))]
-
 
 
 def get_block(grid: list[list[str]], pos: tuple[int, int]) -> list[str]:
@@ -116,8 +118,8 @@ def solve(grid: list[list[str]]) -> list[list[str]] | None:
         if not solved_grid:
             grid[y][x] = "."
             continue
-        else:
-            return solved_grid
+
+        return solved_grid
 
     return None
 
@@ -134,14 +136,14 @@ def check_solution(solution: list[list[str]]) -> bool:
             col = get_col(solution, pos)
             block = get_block(solution, pos)
 
-            if not(row.count(n) == col.count(n) == block.count(n) == 1):
+            if not row.count(n) == col.count(n) == block.count(n) == 1:
                 return False
 
     return True
 
 
-def generate_sudoku(N: int) -> list[list[str]]:
-    """Генерация судоку заполненного на N элементов"""
+def generate_sudoku(n_target: int) -> list[list[str]]:
+    """Генерация судоку заполненного на n_target элементов"""
     grid = [["." for _ in range(9)] for _ in range(9)]
 
     # Заполнить центральный квадрат случайным образом
@@ -151,18 +153,15 @@ def generate_sudoku(N: int) -> list[list[str]]:
         if n not in numbers:
             numbers.append(n)
 
-    for y, line in enumerate(grid):
-        for x, item in enumerate(grid):
-            if y // 3 == x // 3 == 1:
-                grid[y][x] = str(numbers[-1])
-                numbers.pop()
+    for y in [3, 4, 5]:
+        for x in [3, 4, 5]:
+            grid[y][x] = str(numbers.pop())
 
     # Решить судоку уже имеющимся алгоритмом
-    # (We need tp.cast because the solve() function can return None)
-    grid = tp.cast(list[list[str]], solve(grid))
+    solved_grid = tp.cast(list[list[str]], solve(grid))
 
-    # Случайно вычеркнуть 81-N элементов
-    toremove = 81 - N
+    # Случайно вычеркнуть 81-n_target элементов
+    toremove = 81 - n_target
     removed = []
     pos = (randint(0, 8), randint(0, 8))
 
@@ -171,10 +170,10 @@ def generate_sudoku(N: int) -> list[list[str]]:
             pos = (randint(0, 8), randint(0, 8))
 
         y, x = pos
-        grid[y][x] = "."
+        solved_grid[y][x] = "."
         removed.append(pos)
 
-    return grid
+    return solved_grid
 
 
 if __name__ == "__main__":
