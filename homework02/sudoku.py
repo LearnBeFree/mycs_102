@@ -29,11 +29,7 @@ def display(grid: list[list[str]]) -> None:
     width = 2
     line = "+".join(["-" * (width * 3)] * 3)
     for row in range(9):
-        print(
-            "".join(
-                grid[row][col].center(width) + ("|" if str(col) in "25" else "") for col in range(9)
-            )
-        )
+        print("".join(grid[row][col].center(width) + ("|" if str(col) in "25" else "") for col in range(9)))
         if str(row) in "25":
             print(line)
     print()
@@ -43,9 +39,7 @@ def group(values: list[T], n: int) -> list[list[T]]:
     """Group values into groups of n"""
 
     length = len(values)
-    newls: list[list[T]] = [
-        [el for i, el in enumerate(values) if i // n == group_i] for group_i in range(length // n)
-    ]
+    newls: list[list[T]] = [[el for i, el in enumerate(values) if i // n == group_i] for group_i in range(length // n)]
 
     return newls
 
