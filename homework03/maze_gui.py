@@ -1,6 +1,9 @@
 import tkinter as tk
+from copy import deepcopy
 from tkinter import messagebox, ttk
 from typing import List
+
+import pandas as pd
 
 from maze import add_path_to_grid, bin_tree_maze, solve_maze
 
@@ -39,7 +42,12 @@ if __name__ == "__main__":
     N, M = 51, 77
 
     CELL_SIZE = 10
-    GRID = bin_tree_maze(N, M)
+
+    try_grid = bin_tree_maze(N, M)
+    while not solve_maze(deepcopy(try_grid))[1]:
+        try_grid = bin_tree_maze(N, M)
+
+    GRID = try_grid
 
     window = tk.Tk()
     window.title("Maze")
