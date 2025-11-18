@@ -109,11 +109,10 @@ def solve(grid: list[list[str]]) -> list[list[str]] | None:
         grid[y][x] = n
         solved_grid = solve(grid)
 
-        if not solved_grid:
-            grid[y][x] = "."
-            continue
+        if solved_grid:
+            return solved_grid
 
-        return solved_grid
+        grid[y][x] = "."
 
     return None
 
