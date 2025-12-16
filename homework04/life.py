@@ -36,13 +36,18 @@ class GameOfLife:
             # (x-1, y+1), (x, y+1), (x+1, y+1),
             # (x-1, y),             (x+1, y),
             # (x-1, y-1), (x, y-1), (x+1, y-1)
-            (x-1, y+1), (x, y+1), (x+1, y+1),
-            (x-1, y),             (x+1, y),
-            (x-1, y-1), (x, y-1), (x+1, y-1)
+            (x - 1, y + 1),
+            (x, y + 1),
+            (x + 1, y + 1),
+            (x - 1, y),
+            (x + 1, y),
+            (x - 1, y - 1),
+            (x, y - 1),
+            (x + 1, y - 1),
         ]
         neighbors_creatures = []
         for assumed_neighbor in assumed_neighbors:
-            # NOTE tests have incorrect cords ordering, reversing 
+            # NOTE tests have incorrect cords ordering, reversing
             y_n, x_n = assumed_neighbor
             if x_n >= 0 and y_n >= 0:
                 try:
@@ -57,7 +62,7 @@ class GameOfLife:
         for y, line in enumerate(self.curr_generation):
             for x, creature in enumerate(line):
                 if creature:
-                    # NOTE tests have incorrect cords ordering, reversing 
+                    # NOTE tests have incorrect cords ordering, reversing
                     if sum(self.get_neighbours((y, x))) in (2, 3):
                         new_grid[y][x] = creature
                 elif sum(self.get_neighbours((y, x))) == 3:
@@ -98,8 +103,8 @@ class GameOfLife:
         grid = []
         with open(filename) as f:
             for line in f:
-                line = line.rstrip('\n')
-                if '0' in line or '1' in line:
+                line = line.rstrip("\n")
+                if "0" in line or "1" in line:
                     grid.append([int(n) for n in list(line)])
 
         game = GameOfLife((len(grid), len(grid[0])), False)
@@ -111,8 +116,7 @@ class GameOfLife:
         """
         Сохранить текущее состояние клеток в указанный файл.
         """
-        lines_str = [''.join([str(c) for c in line]) for line in self.curr_generation]
-        grid_str = '\n'.join(lines_str)
+        lines_str = ["".join([str(c) for c in line]) for line in self.curr_generation]
+        grid_str = "\n".join(lines_str)
         with open(filename, "w") as f:
             f.write(grid_str)
-

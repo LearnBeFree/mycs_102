@@ -1,8 +1,8 @@
 import curses
+import time
 
 from life import GameOfLife
 from ui import UI
-import time
 
 
 class Console(UI):
@@ -12,7 +12,7 @@ class Console(UI):
         self.CELL_HEIGHT = 2
 
     def draw_borders(self, screen) -> None:
-        """ Отобразить рамку. """
+        """Отобразить рамку."""
         grid_ch_width = self.life.cols * self.CELL_WIDTH + 2
         grid_ch_height = self.life.rows * self.CELL_HEIGHT + 2
         top_bottom_row_str = (grid_ch_width) * " "
@@ -23,10 +23,9 @@ class Console(UI):
         for ch_y in range(1, grid_ch_height - 1):
             for ch_x in (0, grid_ch_width - 1):
                 screen.addstr(ch_y, ch_x, " ", color_pair)
-            
 
     def draw_grid(self, screen) -> None:
-        """ Отобразить состояние клеток. """
+        """Отобразить состояние клеток."""
         for cell_y, line in enumerate(self.life.curr_generation):
             for cell_x, creature in enumerate(line):
                 color_pair = curses.color_pair(2) if creature == 1 else curses.color_pair(1)
@@ -36,20 +35,18 @@ class Console(UI):
                     row_str = " " * self.CELL_WIDTH
                     screen.addstr(ch_y, ch_x, row_str, color_pair)
 
-
     def want_to_quit(self, screen) -> bool:
         try:
             ch = screen.getch()
-            answer = True if ch == ord('q') else False
+            answer = True if ch == ord("q") else False
         except curses.error:
             answer = False
 
-        return answer 
-
+        return answer
 
     def run(self) -> None:
         screen = curses.initscr()
-        screen.timeout(100) # screen.getch() will not block the code. Instead, it will wait for 100 ms
+        screen.timeout(100)  # screen.getch() will not block the code. Instead, it will wait for 100 ms
 
         curses.curs_set(0)  # make the cursor invisible
         curses.start_color()
@@ -78,8 +75,8 @@ class Console(UI):
             curses.endwin()
             print("It's time to stop playing games!")
 
-if __name__ == '__main__':
-    life = GameOfLife((20, 20), max_generations=50)
+
+if __name__ == "__main__":
+    life = GameOfLife((10, 10), max_generations=50)
     ui = Console(life)
     ui.run()
-
