@@ -16,13 +16,13 @@ Grid = tp.List[Creatures]
 class GameOfLife:
     """Main GameOfLife class"""
 
-    def __init__(self, w: int = 640, h: int = 480, s: int = 10, speed: int = 10) -> None:
-        self.width = w
-        self.height = h
-        self.cell_size = s
+    def __init__(self, width: int = 640, height: int = 480, cell_size: int = 10, speed: int = 10) -> None:
+        self.width = width
+        self.height = height
+        self.cell_size = cell_size
 
         # Устанавливаем размер окна
-        self.screen_size = w, h
+        self.screen_size = width, height
         # Создание нового окна
         self.screen = pygame.display.set_mode(self.screen_size)
 
