@@ -39,9 +39,7 @@ def group(values: list[T], n: int) -> list[list[T]]:
     """Group values into groups of n"""
 
     length = len(values)
-    newls: list[list[T]] = [[el for i, el in enumerate(values) if i // n == group_i] for group_i in range(length // n)]
-
-    return newls
+    return [[el for i, el in enumerate(values) if i // n == group_i] for group_i in range(length // n)]
 
 
 def get_row(grid: list[list[str]], pos: tuple[int, int]) -> list[str]:
@@ -53,7 +51,7 @@ def get_row(grid: list[list[str]], pos: tuple[int, int]) -> list[str]:
 def get_col(grid: list[list[str]], pos: tuple[int, int]) -> list[str]:
     """Возвращает все значения для номера столбца, указанного в pos"""
 
-    return [grid[i][pos[1]] for i in range(len(grid))]
+    return [row[pos[1]] for row in grid]
 
 
 def get_block(grid: list[list[str]], pos: tuple[int, int]) -> list[str]:
@@ -82,16 +80,13 @@ def find_empty_positions(grid: list[list[str]]) -> tuple[int, int] | None:
 
 def find_possible_values(grid: list[list[str]], pos: tuple[int, int]) -> set[str]:
     """Вернуть множество возможных значения для указанной позиции"""
-    row = get_row(grid, pos)
-    col = get_col(grid, pos)
-    block = get_block(grid, pos)
-    newset = set()
+    row_set = set(get_row(grid, pos))
+    col_set = set(get_col(grid, pos))
+    block_set = set(get_block(grid, pos))
+    universal = {"1", "2", "3", "4", "5", "6", "7", "8", "9"}
+    taken = row_set | col_set | block_set
 
-    for n in "123456789":
-        if n not in row + col + block:
-            newset.add(n)
-
-    return newset
+    return universal - taken
 
 
 def solve(grid: list[list[str]]) -> list[list[str]] | None:
